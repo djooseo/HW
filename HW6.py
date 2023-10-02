@@ -25,7 +25,7 @@ print(arg_input)
 
 
 def arg_processing(arg1, arg2):
-    if type(arg1 and arg2) in (int, float):
+    if type(arg1) in (int, float) and type(arg2) in (int, float):
         return arg1 * arg2
     elif type(arg1 and arg2) is str:
         return arg1 + arg2
@@ -52,30 +52,39 @@ print(func_res)
 """
 
 
-def cashier_in_cinema(prompt, lower_limit, upper_limit):
-    while True:
-        try:
-            res = int(input(f'{prompt}'))
-        except Exception:
-            print("Будь ласка введіть ваш реальний вік!")
-        else:
-            last_digit = res % 10
-            age = 'рік' if last_digit == 1 and res != 11 else 'роки' if 1 < last_digit < 5 and (
-                    res < 10 or res > 20) else 'років'
-            if res < lower_limit or res > upper_limit:
-                print("Будь ласка введіть ваш реальний вік!")
-                continue
-            elif '7' in str(res):
-                print(f"Вам {res} {age}, вам пощастить!")
-            elif res < 7:
-                print(f"Тобі ж {res} {age}! Де твої батьки?")
-            elif res < 16:
-                print(f"Тобі лише {res} {age}, а це фільм для дорослих!")
-            elif res > 65:
-                print(f"Вам {res} {age}? Покажіть пенсійне посвідчення!")
-            else:
-                print(f"Незважаючи на те, що вам {res} {age}, білетів всеодно нема!")
-            return
+def age_input(prompt):
+    try:
+        res = int(input(f'{prompt}'))
+        return res
+    except Exception:
+        print("Будь ласка введіть ваш реальний вік!")
 
 
-cashier_in_cinema(prompt='Вкажіть ваш вік: ', lower_limit=0, upper_limit=116)
+def word_form(res):
+    last_digit = res % 10
+    age = 'рік' if last_digit == 1 and res != 11 else 'роки' if 1 < last_digit < 5 and (
+            res < 10 or res > 20) else 'років'
+    return age
+
+
+def cashier_in_cinema(res):
+    if '7' in str(res):
+        print(f"Вам {res} {word_form(res)}, вам пощастить!")
+    elif res < 7:
+        print(f"Тобі ж {res} {word_form(res)}! Де твої батьки?")
+    elif res < 16:
+        print(f"Тобі лише {res} {word_form(res)}, а це фільм для дорослих!")
+    elif res > 65:
+        print(f"Вам {res} {word_form(res)}? Покажіть пенсійне посвідчення!")
+    else:
+        print(f"Незважаючи на те, що вам {res} {word_form(res)}, білетів всеодно нема!")
+    return
+
+
+def final_res():
+    prompt = 'Вкажіть ваш вік: '
+    res = age_input(prompt)
+    cashier_in_cinema(res)
+
+
+final_res()
