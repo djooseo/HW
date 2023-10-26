@@ -21,12 +21,13 @@ class BasePlayer:
 
 
 class HumanPlayer(BasePlayer):
-    name = input('Enter your name: ')
+    def __init__(self):
+        self.name = input('Enter your name: ')
 
     def _get_figure(self, options: list):
         names = [obj.name for obj in options]
         while True:
-            user_input = input(f'Enter one of {names}: ')
+            user_input = input(f'Enter one of the {names}: ')
             if user_input not in names:
                 print('Wrong input')
                 continue
@@ -47,11 +48,9 @@ class AIPlayer(BasePlayer):
 
 
 class BaseGameFigure:
-
     def __eq__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-
         return type(self) == type(other)
 
 
@@ -61,9 +60,7 @@ class Rock(BaseGameFigure):
     def __gt__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-        if type(other) == Scissors:
-            return True
-        if type(other) == Lizard:
+        if isinstance(other, (Scissors, Lizard)):
             return True
         else:
             return False
@@ -75,9 +72,7 @@ class Scissors(BaseGameFigure):
     def __gt__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-        if type(other) == Paper:
-            return True
-        if type(other) == Lizard:
+        if isinstance(other, (Paper, Lizard)):
             return True
         else:
             return False
@@ -89,9 +84,7 @@ class Paper(BaseGameFigure):
     def __gt__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-        if type(other) == Rock:
-            return True
-        if type(other) == Spock:
+        if isinstance(other, (Rock, Spock)):
             return True
         else:
             return False
@@ -103,9 +96,7 @@ class Lizard(BaseGameFigure):
     def __gt__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-        if type(other) == Spock:
-            return True
-        if type(other) == Paper:
+        if isinstance(other, (Spock, Paper)):
             return True
         else:
             return False
@@ -117,9 +108,7 @@ class Spock(BaseGameFigure):
     def __gt__(self, other):
         if not isinstance(other, BaseGameFigure):
             raise TypeError
-        if type(other) == Scissors:
-            return True
-        if type(other) == Rock:
+        if isinstance(other, (Scissors, Rock)):
             return True
         else:
             return False
@@ -142,9 +131,9 @@ class RSPGame:
         if f1 == f2:
             print('Draw')
         elif f1 > f2:
-            print(f'AI defeats {HumanPlayer.name} with {f1.name}')
+            print(f'{self.player1.name} defeats {self.player2.name} with {f1.name}')
         else:
-            print(f'{HumanPlayer.name} defeats AI with {f2.name}')
+            print(f'{self.player2.name} defeats {self.player1.name} with {f2.name}')
 
     def play_3_times(self):
         print(f'{self.game_name} started for 3 time play')
