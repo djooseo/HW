@@ -112,35 +112,47 @@ class Spock(BaseGameFigure):
             return False
 
 
+class PlayerDescriptor:
+    _name = None
+
+    def __init__(self, name):
+        self._name = name
+
+    def __get__(self, instance, owner):
+        return instance.__dict__[self._name]
+
+    def __set__(self, instance, value):
+        if not isinstance(value, BaseAbstractPlayer):
+            raise TypeError
+        instance.__dict__[self._name] = value
+
+
 class RSPLSGame:
     game_message = ('Game "RSPLS" has started. Each player has to choose one of the figures '
-                    '"Rock Scissors Paper, Lizard, Spock" and defeat an opponent')
-    player1 = None
-    player2 = None
+                    '"Rock Scissors Paper, Lizard, Spock" and defeat an opponent.')
+    _player1 = PlayerDescriptor('_player1')
+    _player2 = PlayerDescriptor('_player2')
     rules = [Rock(), Scissors(), Paper(), Lizard(), Spock()]
 
     def __init__(self, player1, player2):
-        self.player1 = player1
-        self.player2 = player2
+        self._player1 = player1
+        self._player2 = player2
 
-    def _play(self):
-        f1 = self.player1.get_figure(self.rules)
-        f2 = self.player2.get_figure(self.rules)
+    @classmethod
+    def get_from_cls(cls):
+        print(cls.game_message)
+
+    def play(self):
+        self.get_from_cls()
+        f1 = self._player1.get_figure(self.rules)
+        f2 = self._player2.get_figure(self.rules)
 
         if f1 == f2:
             print('Draw')
         elif f1 > f2:
-            print(f'{self.player1.name} defeats {self.player2.name} with {f1.name}')
+            print(f'{self._player1.name} defeats {self._player2.name} with {f1.name}')
         else:
-            print(f'{self.player2.name} defeats {self.player1.name} with {f2.name}')
-
-    @classmethod
-    def get_from_cls(cls):
-        return cls.game_message
-
-    def play_3_times(self):
-        for _ in range(3):
-            self._play()
+            print(f'{self._player2.name} defeats {self._player1.name} with {f2.name}')
 
 
 ai_player = AIPlayer()
@@ -148,5 +160,4 @@ human_player = HumanPlayer()
 
 game = RSPLSGame(ai_player, human_player)
 
-print(game.get_from_cls())
-game.play_3_times()
+game.play()
