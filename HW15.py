@@ -11,7 +11,7 @@ n. [назва валюти n] to UAH: [значення курсу валюти
 
 import sys
 import requests
-sys.stdout = open(sys.stdout.fileno(), mode='w', encoding='utf-8', buffering=1)
+sys.stdout = open(sys.stdout.fileno())
 
 
 class ExchangeRate:
