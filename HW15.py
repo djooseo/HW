@@ -9,9 +9,7 @@ n. [назва валюти n] to UAH: [значення курсу валюти
 опціонально передбачте для користувача можливість обирати дату, на яку він хоче отримати курс
 """
 
-import sys
 import requests
-sys.stdout = open(sys.stdout.fileno())
 
 
 class ExchangeRate:
