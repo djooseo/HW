@@ -45,7 +45,10 @@ class ExchangeRate:
                 counter += 1
                 file.write(f"{counter}. {name} на Гривню: {value}\n")
 
+    def end_res(self):
+        self.get_exchange_rate()
+        self.txt_file()
 
-exchange_rate = ExchangeRate()
-exchange_rate.get_exchange_rate()
-exchange_rate.txt_file()
+
+currency_rate = ExchangeRate()
+currency_rate.end_res()
