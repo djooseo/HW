@@ -20,8 +20,9 @@ class ExchangeRate:
 
     def get_exchange_rate(self):
         response = requests.get(self.url)
-        self.data = response.json()
-        self.date = self.data[0]["exchangedate"]
+        if 200 <= response.status_code < 300:
+            self.data = response.json()
+            self.date = self.data[0]["exchangedate"]
 
         updated_data = []
         for currency in self.data:
