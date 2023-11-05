@@ -17,12 +17,18 @@ class ExchangeRate:
         self.url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json"
         self.data = None
         self.date = None
+        self.response = None
 
     def get_exchange_rate(self):
-        response = requests.get(self.url)
-        if 200 <= response.status_code < 300:
-            self.data = response.json()
-            self.date = self.data[0]["exchangedate"]
+        try:
+            self.response = requests.get(self.url)
+        except:
+            print('Щось пішло не так!')
+        else:
+            if 200 <= self.response.status_code < 300:
+                self.data = self.response.json()
+                self.date = self.data[0]["exchangedate"]
+
 
         updated_data = []
         for currency in self.data:
