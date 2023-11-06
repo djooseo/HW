@@ -20,14 +20,20 @@ class ExchangeRate:
         self.response = None
 
     def get_exchange_rate(self):
+        headers = {
+            "accept": "application/json",
+        }
+
         try:
-            self.response = requests.get(self.url)
+            self.response = requests.get(self.url, headers=headers)
         except:
             print('Щось пішло не так!')
         else:
             if 200 <= self.response.status_code < 300:
-                self.data = self.response.json()
-                self.date = self.data[0]["exchangedate"]
+                if 'application/json' in self.response.headers.get('Content-Type', ''):
+                    self.data = self.response.json()
+                    if len(self.data) > 0:
+                        self.date = self.data[0].get('exchangedate')
 
         updated_data = []
         for currency in self.data:
@@ -44,8 +50,8 @@ class ExchangeRate:
 
             counter = 0
             for currency in self.data:
-                name = currency["txt"]
-                value = currency["rate"]
+                name = currency.get('txt', '')
+                value = currency.get('rate', '')
                 counter += 1
                 file.write(f"{counter}. {name} на Гривню: {value}\n")
 
