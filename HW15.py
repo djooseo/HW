@@ -32,7 +32,8 @@ class ExchangeRate:
             if 200 <= self.response.status_code < 300:
                 if 'application/json' in self.response.headers.get('Content-Type', ''):
                     self.data = self.response.json()
-                    self.date = self.data[0].get('exchangedate', '')
+                    if type(self.data) is list:
+                        self.date = self.data[0].get('exchangedate', '')
 
         updated_data = []
         for currency in self.data:
